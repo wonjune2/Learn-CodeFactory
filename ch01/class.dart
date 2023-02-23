@@ -2,7 +2,7 @@ class Idol {
   final String name;
   final int membersCount;
 
-  Idol(this.name, this.membersCount);
+  Idol({required this.name, required this.membersCount});
 
   Idol.fromMap(Map<String, dynamic> map)
       : this.name = map['name'],
@@ -14,7 +14,7 @@ class Idol {
 }
 
 void main(List<String> args) {
-  Idol blackPink = Idol('블랙핑크', 4);
+  Idol blackPink = Idol(name: "블랙핑크", membersCount: 4);
   blackPink.sayHello();
 
   Idol bts = Idol.fromMap({
