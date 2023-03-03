@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:ch10/screen/home_screen.dart';
+import 'package:ch10/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shake/shake.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -10,9 +14,20 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
   TabController? controller;
+  double threshold = 2.7;
+  int number = 1;
+  ShakeDetector? shakeDetector;
 
   void tabListener() {
     setState(() {});
+  }
+
+  void onPhoneShake() {
+    final rand = Random();
+
+    setState(() {
+      number = rand.nextInt(5) + 1;
+    });
   }
 
   @override
@@ -21,28 +36,42 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
 
     controller = TabController(length: 2, vsync: this);
     controller!.addListener(tabListener);
+
+    shakeDetector = ShakeDetector.autoStart(
+      shakeSlopTimeMS: 100,
+      shakeThresholdGravity: threshold,
+      onPhoneShake: onPhoneShake,
+    );
+  }
+
+  void onThresholdChange(double val) {
+    print('민감도: $val');
+    setState(() {
+      threshold = val;
+    });
   }
 
   @override
   void dispose() {
     controller!.removeListener(tabListener);
+    shakeDetector!.stopListening();
     super.dispose();
   }
 
   List<Widget> renderChildren() {
     return [
       Container(
-        child: const Center(
-          child: HomeScreen(number: 5),
+        child: Center(
+          child: HomeScreen(
+            number: number,
+          ),
         ),
       ),
       Container(
-        child: const Center(
-          child: Text(
-            'Tab 2',
-            style: TextStyle(
-              color: Colors.white,
-            ),
+        child: Center(
+          child: SettingsScreen(
+            threshold: 10.0,
+            onThresholdChange: onThresholdChange,
           ),
         ),
       ),
