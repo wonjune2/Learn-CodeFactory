@@ -1,5 +1,5 @@
 import 'package:ch10/const/colors.dart';
-import 'package:ch10/screen/home_screen.dart';
+import 'package:ch10/screen/root_screen.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) {
@@ -18,7 +18,7 @@ void main(List<String> args) {
           backgroundColor: backgroundColor,
         ),
       ),
-      home: const HomeScreen(),
+      home: const RootScreen(),
     ),
   );
 }
